@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Izlar - Raqamli Kriminalistika</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            top: -100px;
+            left: -100px;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+            bottom: -100px;
+            right: -100px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        .hero-content {
+            z-index: 1;
+            color: white;
+            padding: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+            to { text-shadow: 0 0 30px rgba(255,255,255,0.8), 0 0 40px rgba(124,58,237,0.5); }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .author {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-top: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            animation: slideIn 0.6s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h2 {
+            color: #7e22ce;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #7e22ce, #db2777);
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: #4f46e5;
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            opacity: 0.3;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .card h4 {
+            color: #4f46e5;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card p, .card ul {
+            position: relative;
+            z-index: 1;
+        }
+
+        ul {
+            margin-left: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .stages-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stage {
+            flex: 1 1 calc(33.333% - 1rem);
+            min-width: 250px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .stage:hover {
+            transform: scale(1.05);
+            border-color: #764ba2;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .stage-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .stage:hover .stage-number {
+            animation: none;
+            transform: scale(1.2);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background 0.3s ease;
+        }
+
+        tr:hover td {
+            background: #f3f4f6;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #78350f;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border-left: 5px solid #78350f;
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .principles {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .principle {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            color: white;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .principle:hover {
+            transform: scale(1.1) rotate(2deg);
+        }
+
+        .principle h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: #1e3c72;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stage {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>VIRTUAL IZLAR</h1>
+            <p>Raqamli Kriminalistika asoslari</p>
+            <div class="author">B. Karimov</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Virtual iz nima?</h2>
+            <div class="definition-box">
+                <p><strong>Virtual iz</strong> - Virtual muhitda qurilma yoki inson omili yoxud kiber jarayon natijasida yuzaga keladigan axborot.</p>
+            </div>
+            <p>Barcha ma'lumotlar axborot bo'lib, ular fizik muhit yoki tashuvchisiz mavjud bo'la olmaydi. Raqamli shaklda saqlanadigan axborotlarga "elektron ma'lumotlar" deyiladi. Ushbu kombinatsiya 0 va 1 dan iborat bo'ladi va dastur yoki kod tomonidan berilgan ko'rsatmalar yordamida saqlanadi hamda olinadi.</p>
+        </div>
+
+        <div class="section">
+            <h2>Virtual izlar tasnifi</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-number">01</div>
+                    <h4>O'zgaruvchan ma'lumotlar</h4>
+                    <p>Quvvatga bog'liq muhitlarda saqlanadigan, elektr impulslari to'xtashi bilan darhol yo'qoladigan, tizimning joriy holatini aks ettiruvchi ma'lumotlar.</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">02</div>
+                    <h4>O'zgarmas ma'lumotlar</h4>
+                    <p>Energiya manbai bilan ta'minlanishidan qat'i nazar, uzoq muddat saqlanadigan axborot. HDD, SSD, ROM, flash kabi qurilmalarda joylashadi.</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">03</div>
+                    <h4>Metama'lumot</h4>
+                    <p>"Ma'lumot haqidagi ma'lumotlar" - elektron axborot obyektining xususiyatlari, tafsilotlari va kontekstini tavsiflab beradigan qo'shimcha ma'lumotlar.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>O'zgaruvchan ma'lumotlar</h2>
+            <h3>Asosiy belgilari:</h3>
+            <ul>
+                <li><strong>Mo'rt:</strong> Kompyuter o'chirilib yoki qayta yuklanganda izsiz yo'qoladi</li>
+                <li><strong>Quvvatga bog'liq:</strong> Elektr uzilishi bilan yo'qoladi</li>
+                <li><strong>Vaqtinchalik:</strong> Faqat muayyan seans yoki jarayonga tegishli</li>
+                <li><strong>Dinamik:</strong> Soniyama-soniya o'zgaradi</li>
+                <li><strong>Ta'sircha muhit:</strong> RAM, cache, registr yoki buferda saqlanadi</li>
+            </ul>
+
+            <h3>O'zgaruvchan ma'lumot turlari:</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <h4>RAM</h4>
+                    <ul>
+                        <li>Joriy ishlayotgan dasturlar</li>
+                        <li>Jarayonlar (processes)</li>
+                        <li>Foydalanuvchi sessiyalari</li>
+                        <li>Parollar</li>
+                        <li>Shifrlash kalitlari</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>TARMOQ</h4>
+                    <ul>
+                        <li>Faol tarmoqli sessiyalar</li>
+                        <li>IP-manzillar</li>
+                        <li>ARP, routing jadvallari</li>
+                        <li>Connected devices</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>TIZIM</h4>
+                    <ul>
+                        <li>OS cache</li>
+                        <li>Temporary files</li>
+                        <li>Real-time logs</li>
+                        <li>Clipboard ma'lumotlari</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Ustuvorlik tartibi (eng muhimdan boshlab):</h3>
+                <p><strong>1. CPU Registers & Cache → 2. RAM → 3. Process/Network → 4. Kernel/ARP/Routing → 5. Temp/Logs → 6. Disk → 7. Archive</strong></p>
+                <p><em>Agar noto'g'ri tartibda to'plansa, qimmatli volatile data abadiy yo'qolishi mumkin!</em></p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>O'zgarmas ma'lumotlar</h2>
+            <h3>Asosiy xususiyatlari:</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <h4>Energiya mustaqilligi</h4>
+                    <p>Quvvat o'chganda ham ma'lumot saqlanadi</p>
+                </div>
+                <div class="card">
+                    <h4>Uzoq muddatlilik</h4>
+                    <p>Yillar davomida o'zgarmasdan turishi mumkin</p>
+                </div>
+                <div class="card">
+                    <h4>Katta hajm</h4>
+                    <p>RAMga nisbatan ancha katta sig'im (TB lab)</p>
+                </div>
+                <div class="card">
+                    <h4>Qoldiq izlar</h4>
+                    <p>Format qilgandan keyin ham qayta tiklash mumkin</p>
+                </div>
+            </div>
+
+            <h3>Asosiy belgilari:</h3>
+            <ul>
+                <li>Quvvat o'chganda ham saqlanib qoladi</li>
+                <li>Fayllar fayl tizimi orqali ko'rinadi</li>
+                <li>Fayl tizimi metama'lumotlari mavjud (sana, vaqt, ruxsatlar)</li>
+                <li>Qoldiq izlar (deleted files, slack space)</li>
+                <li>Daliliy ahamiyatga ega loglar va jurnal fayllar</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Metama'lumotlar</h2>
+            <div class="definition-box">
+                <p>"Ma'lumot haqidagi ma'lumotlar" - biror fayl, hujjat, rasm, video yoki har qanday axborot obyektining xususiyatlari, tafsilotlari va kontekstini tavsiflab beradigan qo'shimcha ma'lumotlar.</p>
+            </div>
+
+            <h3>10 ta asosiy belgi:</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-number">01</div>
+                    <h4>"Ma'lumot haqidagi ma'lumot"</h4>
+                    <p>Kontentni emas, uning xususiyatlarini tavsiflaydi</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">02</div>
+                    <h4>Obyektga bog'langan</h4>
+                    <p>Faylning ichida yoki tashqarisida bo'lishi mumkin</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">03</div>
+                    <h4>O'zgarishlar tarixi</h4>
+                    <p>Created, Modified, Accessed vaqt tamg'alarini saqlaydi</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">04</div>
+                    <h4>Kontekst yaratish</h4>
+                    <p>GPS, IP, qurilma modeli, OS versiyasi va boshqalar</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">05</div>
+                    <h4>Tizim tomonidan qayd</h4>
+                    <p>Soxtalashtirish juda qiyin</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">06</div>
+                    <h4>Identifikatsiya</h4>
+                    <p>Kim, qayerda, qachon yaratganini aniqlash</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">07</div>
+                    <h4>Iz qoldirish</h4>
+                    <p>Har bir harakatdan keyin yangi iz</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">08</div>
+                    <h4>Strukturaviy</h4>
+                    <p>Maydonlar va atributlar ko'rinishida</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">09</div>
+                    <h4>Mustaqil daliliy qiymat</h4>
+                    <p>O'z-o'zidan dalil bo'la oladi</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">10</div>
+                    <h4>Avtomatik yaratilish</h4>
+                    <p>Foydalanuvchi aralashuvisiz</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Virtual izlar bilan ishlash bosqichlari</h2>
+            <div class="stages-container">
+                <div class="stage">
+                    <div class="stage-number">01</div>
+                    <h4>Tayyorgarlik</h4>
+                    <p>Mutaxassis va tergovchi texnik, huquqiy va tashkiliy jihatdan tayyor bo'lishi</p>
+                </div>
+                <div class="stage">
+                    <div class="stage-number">02</div>
+                    <h4>Aniqlash</h4>
+                    <p>Qaysi obyektlar raqamli dalil bo'lishi mumkinligini belgilash</p>
+                </div>
+                <div class="stage">
+                    <div class="stage-number">03</div>
+                    <h4>Saqlash va qayd etish</h4>
+                    <p>Dalilni mavjud holatida muzlatib qo'yish</p>
+                </div>
+                <div class="stage">
+                    <div class="stage-number">04</div>
+                    <h4>To'plash</h4>
+                    <p>Moddiy yig'ish va elektron nusxa ko'chirish</p>
+                </div>
+                <div class="stage">
+                    <div class="stage-number">05</div>
+                    <h4>Tadqiqot</h4>
+                    <p>Nusxalar ustida texnik tahlil ishlari</p>
+                </div>
+                <div class="stage">
+                    <div class="stage-number">06</div>
+                    <h4>Tahlil qilish</h4>
+                    <p>Faktlar zanjirini shakllantirish</p>
+                </div>
+                <div class="stage">
+                    <div class="stage-number">07</div>
+                    <h4>Hujjatlashtirish</h4>
+                    <p>Butun jarayon bo'ylab uzluksiz</p>
+                </div>
+                <div class="stage">
+                    <div class="stage-number">08</div>
+                    <h4>Taqdimot</h4>
+                    <p>Sudda yoki tergov organida taqdim etish</p>
+                </div>
+                <div class="stage">
+                    <div class="stage-number">09</div>
+                    <h4>Post-Insident tahlil</h4>
+                    <p>Jarayonni baholash va yangi choralar ishlab chiqish</p>
+                </div>
+            </div>
+
+            <div class="principles">
+                <div class="principle">
+                    <h4>Integrity</h4>
+                    <p>Dalilning o'zgarmasligi</p>
+                </div>
+                <div class="principle">
+                    <h4>Repeatability</h4>
+                    <p>Jarayonning takrorlanishi</p>
+                </div>
+                <div class="principle">
+                    <h4>Verifiability</h4>
+                    <p>Natijaning tekshirish imkoniyati</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Chain of Custody - Hujjatlashtirish zanjiri</h2>
+            <div class="highlight-box">
+                <p><strong>Chain of Custody</strong> - dalilni tergovchi olgan paytdan tortib sudda taqdim etilgunga qadar dalil bilan kim ishlaganini, qayerda saqlanganini va qanday o'zgarganini yozib boradigan rasmiy protsessual nazorat tizimi.</p>
+            </div>
+
+            <h3>Nima uchun muhim?</h3>
+            <ul>
+                <li>Dalil soxtalashtirilmaganini isbotlaydi</li>
+                <li>Dalil kimning qo'lida bo'lganini ko'rsatadi</li>
+                <li>Noqonuniy manipulyatsiya bo'lmaganini kafolatlaydi</li>
+                <li>Sud dalilni qabul qilishi uchun majburiy talab</li>
+                <li>Bir bit ham o'zgarsa dalil haqiqiy emas deb topiladi</li>
+            </ul>
+
+            <h3>Chain of Custody o'z ichiga oladi:</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <h4>To'plash</h4>
+                    <p>Dalil to'g'ri usulda olingan, imij yaratilgan, vositalar ishlatilgan</p>
+                </div>
+                <div class="card">
+                    <h4>Vaqt belgilari</h4>
+                    <p>Aniq sana va vaqt, izchillik</p>
+                </div>
+                <div class="card">
+                    <h4>Saqlash</h4>
+                    <p>Secure Evidence Room, qulfli xona, nazorat ostida</p>
+                </div>
+                <div class="card">
+                    <h4>Nazorat</h4>
+                    <p>Kim oldi, kimga topshirdi, har bir bosqichda imzo</p>
+                </div>
+                <div class="card">
+                    <h4>Tashish</h4>
+                    <p>Qanday tashilgan, antistatik paketlar, muhr</p>
+                </div>
+                <div class="card">
+                    <h4>Vakolat</h4>
+                    <p>Faqat vakolatli shaxslar ko'rgan</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Hash va dalillarning yaxlitligi</h2>
+            <div class="definition-box">
+                <p><strong>Digital Integrity</strong> - raqamli ma'lumot yaratilgan, uzatilgan yoki saqlangan paytdan beri hech qanday ruxsatsiz o'zgartirilmagan bo'lishi kerak.</p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Usul</th>
+                            <th>Tavsifi</th>
+                            <th>Turlar</th>
+                            <th>Afzalliklar</th>
+                            <th>Kamchiliklar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Checksum</strong></td>
+                            <td>Xatolarni aniqlash uchun, 16-32 bit</td>
+                            <td>CRC-16, CRC-32</td>
+                            <td>Juda tez, oson</td>
+                            <td>Xavfsizlik past</td>
+                        </tr>
+                        <tr>
+                            <td><strong>One-Way Hash</strong></td>
+                            <td>Bir tomonlama funksiya, 80-240 bit</td>
+                            <td>SHA-1, MD5, SHA-256, BLAKE3</td>
+                            <td>Har qanday o'zgarish seziladi</td>
+                            <td>Kim yaratganini ko'rsatmaydi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Digital Signature</strong></td>
+                            <td>Hash + ochiq kalit kriptografiyasi</td>
+                            <td>RSA, DSA, PGP</td>
+                            <td>Shaxsni tasdiqlovchi</td>
+                            <td>Sekinroq</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Muhim eslatma:</h3>
+                <p>Hash tergovchi va mutaxassisga dalilning buzilmaganligini tekshirish va haqiqiy ekanligini isbotlashga yordam beradi. Xuddi shunday, asl dalilning o'zgarmaganligi keyinchalik sudda ham hash qiymatlarini solishtirib tekshiriladi.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Daubert standartlari</h2>
+            <p><em>Daubert v. Merrel-Dow - 509 US 579 (1993)</em> da belgilangan diktumga ko'ra, sudyalar "ilmiy dalillarning darvozabonlari" bo'lishi kerak. Ular ilmiy dalillarning dolzarbligi va ishonchli bo'lishini ta'minlashlari shart.</p>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-number">1</div>
+                    <h4>Ilmiy nazariya empirik jihatdan tekshiriladimi?</h4>
+                    <p>Nazariya amalda sinovdan o'tgan bo'lishi kerak</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">2</div>
+                    <h4>Texnikaning ilmiy nazariyasi taqrizdan o'tkazilib, nashr etilganmi?</h4>
+                    <p>Ilmiy jamiyat tomonidan ko'rib chiqilgan</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">3</div>
+                    <h4>Ma'lum yoki mumkin bo'lgan xatolik darajasi qanday?</h4>
+                    <p>Usulning aniqlik darajasi ma'lum bo'lishi kerak</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">4</div>
+                    <h4>Qo'llanilgan usullar ilmiy hamjamiyat tomonidan tan olinganmi?</h4>
+                    <p>Standartlashtirilgan va qabul qilingan usullar</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Virtual izlar qayerda topiladi?</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <h4>Kompyuter tizimlari</h4>
+                    <ul>
+                        <li>Noutbuklar (Windows, Linux, macOS)</li>
+                        <li>Stasionar kompyuterlar</li>
+                        <li>HDD, SSD, NVMe</li>
+                        <li>USB fleshkalar</li>
+                        <li>Virtual mashinalar</li>
+                        <li>BIOS/UEFI loglari</li>
+                        <li>RAM (volatile data)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Mobil qurilmalar</h4>
+                    <ul>
+                        <li>Smartfonlar (Android, iOS)</li>
+                        <li>Planshetlar</li>
+                        <li>E-book reader'lar</li>
+                        <li>Smartwatch</li>
+                        <li>Mobil modemlar</li>
+                        <li>SIM kartalar</li>
+                        <li>eSIM profillari</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Tarmoqlar va internet</h4>
+                    <ul>
+                        <li>Router, Switch, Modem</li>
+                        <li>Wi-Fi access point loglari</li>
+                        <li>VPN server loglari</li>
+                        <li>Firewall loglari</li>
+                        <li>IDS/IPS tizimlari</li>
+                        <li>NAT va DHCP loglari</li>
+                        <li>Proxy server yozuvlari</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Serverlar va infratuzilma</h4>
+                    <ul>
+                        <li>Fayl serverlar</li>
+                        <li>Mail serverlar</li>
+                        <li>Domain Controller</li>
+                        <li>Database serverlar</li>
+                        <li>Backup serverlar</li>
+                        <li>NAS/SAN saqlash</li>
+                        <li>Web-serverlar</li>
+                        <li>Cloud-hosting serverlari</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Bulut xizmatlari</h4>
+                    <ul>
+                        <li>Google Drive / OneDrive / iCloud</li>
+                        <li>Dropbox / Mega / Box</li>
+                        <li>Google Photos</li>
+                        <li>Google Maps Timeline</li>
+                        <li>Telegram, WhatsApp backup'lari</li>
+                        <li>SaaS tizimlari: CRM, ERP</li>
+                        <li>AWS S3, CloudTrail loglari</li>
+                        <li>Microsoft 365 / Azure AD</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Elektron pochta va xabarlar</h4>
+                    <ul>
+                        <li>Gmail, Yahoo, Outlook</li>
+                        <li>IMAP/POP3 saqlangan fayllar</li>
+                        <li>Webmail cookie/metadata</li>
+                        <li>Telegram (Cloud-based)</li>
+                        <li>WhatsApp (local + cloud)</li>
+                        <li>Signal, Viber, Messenger</li>
+                        <li>SMS va MMS metadatalari</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Ijtimoiy tarmoqlar</h4>
+                    <ul>
+                        <li>Facebook profil ma'lumotlari</li>
+                        <li>Instagram post va story metadata</li>
+                        <li>TikTok loglari</li>
+                        <li>X (Twitter) data archive</li>
+                        <li>LinkedIn faoliyat tarixlari</li>
+                        <li>YouTube tarixi, izohlar</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Internet faoliyati</h4>
+                    <ul>
+                        <li>Browser tarixlari</li>
+                        <li>Cookies</li>
+                        <li>Session storage</li>
+                        <li>Cache</li>
+                        <li>Autofill</li>
+                        <li>Bookmarks</li>
+                        <li>HTTPS/SNI loglari</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>IoT qurilmalar</h4>
+                    <ul>
+                        <li>Smart TV</li>
+                        <li>IP Camera, CCTV</li>
+                        <li>Smart Home qurilmalar</li>
+                        <li>Smart Door Locks</li>
+                        <li>GPS-trekerlar</li>
+                        <li>Smart car ECU loglari</li>
+                        <li>Fitness-trekerlar</li>
+                        <li>Baby monitor kameralar</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Transport va geolokatsiya</h4>
+                    <ul>
+                        <li>Taksi servis loglari (Yandex Go, Uber)</li>
+                        <li>GPS navigatsiya tizimlari</li>
+                        <li>Smart car ECU loglari</li>
+                        <li>Avto videoregistrator</li>
+                        <li>Mobil ilovalar GPS metadata</li>
+                        <li>Google Timeline</li>
+                        <li>Base-station triangulation</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Moliyaviy tizimlar</h4>
+                    <ul>
+                        <li>Onlayn banking loglari</li>
+                        <li>To'lov tizimlari (Payme, Click, PayPal)</li>
+                        <li>Karta tranzaksiyalari</li>
+                        <li>Online KKM loglari</li>
+                        <li>POS terminallar</li>
+                        <li>Kriptovalyuta hamyonlari</li>
+                        <li>Exchange birja loglari</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Xavfsizlik tizimlari</h4>
+                    <ul>
+                        <li>Access control loglari</li>
+                        <li>Turniket tizimlari</li>
+                        <li>Video kuzatuv arxivlari</li>
+                        <li>SIEM loglari</li>
+                        <li>DLP tizimlari</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Asosiy terminlar va ta'riflar</h2>
+
+            <div class="definition-box">
+                <h3>Elektron form</h3>
+                <p>Kompyuter yoki raqamli qurilmada yaratilgan, yuborilgan, olingan yoki saqlangan har qanday ma'lumot.</p>
+            </div>
+
+            <div class="definition-box">
+                <h3>Ma'lumotlar (Data)</h3>
+                <p>Kompyuter qayta ishlashi mumkin bo'lgan har qanday axborot. Rasmiylashtirilgan tarzda tayyorlanayotgan yoki tayyorlangan hamda kompyuter tizimida qayta ishlanishi mo'ljallangan axborot, bilim yoki faktlar, tushunchalar yoki yo'riqnomalar.</p>
+            </div>
+
+            <div class="definition-box">
+                <h3>Computer Resource</h3>
+                <p>Kompyuterning o'zi, uning tarmog'i, dasturiy ta'minoti, ma'lumotlari va ma'lumotlar bazalari - ya'ni kompyuterga tegishli barcha narsalar.</p>
+            </div>
+
+            <div class="definition-box">
+                <h3>Information (Axborot)</h3>
+                <p>Kompyuter tomonidan yaratilgan, o'qilgan yoki ko'rsatilgan har qanday axborot.</p>
+            </div>
+
+            <div class="definition-box">
+                <h3>Elektron yozuv</h3>
+                <p>Optik, magnit yoki raqamli vositada saqlangan, yaratilgan, olingan yoki yuborilgan har qanday ma'lumot.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Muhim qoida:</h3>
+                <p><strong>Agar bilimlar, faktlar yoki axborot kompyuter resursida saqlansa, u avtomatik ravishda dataga aylanadi.</strong></p>
+                <p><strong>Agar istalgan axborot elektron, magnit, optik yoki raqamli vositalar orqali yaratilgan, saqlangan, yuborilgan bo'lsa, u avtomatik ravishda elektron dalil hisoblanadi.</strong></p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>NIST, DFRWS va SWGDE modellari</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bosqich</th>
+                            <th>NIST</th>
+                            <th>DFRWS</th>
+                            <th>SWGDE</th>
+                            <th>Izoh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1. Aniqlash</td>
+                            <td>Collection</td>
+                            <td>Preparation & Identification</td>
+                            <td>Planning & Identification</td>
+                            <td>SWGDE reja va identifikatsiyani birlashtriradi</td>
+                        </tr>
+                        <tr>
+                            <td>2. Saqlash</td>
+                            <td>Examination</td>
+                            <td>Preservation</td>
+                            <td>Preservation</td>
+                            <td>SWGDE va DFRWS o'xshash</td>
+                        </tr>
+                        <tr>
+                            <td>3. To'plash</td>
+                            <td>Collection</td>
+                            <td>Collection</td>
+                            <td>Acquisition</td>
+                            <td>SWGDE "acquisition" eng to'g'ri atama</td>
+                        </tr>
+                        <tr>
+                            <td>4. Tadqiqot</td>
+                            <td>Examination</td>
+                            <td>Examination</td>
+                            <td>Examination</td>
+                            <td>Uchala modelda bir xil</td>
+                        </tr>
+                        <tr>
+                            <td>5. Tahlil</td>
+                            <td>Analysis</td>
+                            <td>Analysis</td>
+                            <td>Analysis</td>
+                            <td>Timeline va korrelyatsiya muhim</td>
+                        </tr>
+                        <tr>
+                            <td>6. Talqin</td>
+                            <td>Analysis ichida</td>
+                            <td>Presentation ga tayyorlov</td>
+                            <td>Interpretation</td>
+                            <td>SWGDE eng to'liq yondashuv</td>
+                        </tr>
+                        <tr>
+                            <td>7. Hujjatlashtirish</td>
+                            <td>Barcha bosqichlarda</td>
+                            <td>Documentation</td>
+                            <td>Documentation</td>
+                            <td>Uzluksiz jarayon</td>
+                        </tr>
+                        <tr>
+                            <td>8. Taqdimot</td>
+                            <td>Reporting</td>
+                            <td>Presentation</td>
+                            <td>Reporting</td>
+                            <td>Sudda tushuntirish</td>
+                        </tr>
+                        <tr>
+                            <td>9. Post-Incident</td>
+                            <td>Yo'q</td>
+                            <td>Yo'q</td>
+                            <td>Quality Assurance</td>
+                            <td>Faqat SWGDEda bor</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Xulosa:</h3>
+                <ul>
+                    <li><strong>DFRWS</strong> - nazariy jihatdan ideal model</li>
+                    <li><strong>NIST</strong> - hukumat va korporativ sektor uchun amaliy model</li>
+                    <li><strong>SWGDE</strong> - kriminalistika ekspertlari uchun mukammal, eng to'liq model</li>
+                </ul>
+                <p><em>Ilmiy ish yoki dissertatsiya uchun: SWGDE + DFRWS birlashtirilgan model eng to'g'ri variant!</em></p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Virtual Izlar - Raqamli Kriminalistika | B. Karimov</p>
+        <p style="margin-top: 1rem; opacity: 0.8;">Barcha huquqlar himoyalangan</p>
+    </footer>
+
+    <script>
+        // Scroll indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollIndicator').style.width = scrolled + '%';
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section, .card, .stage').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
